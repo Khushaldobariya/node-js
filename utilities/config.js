@@ -1,0 +1,4 @@
+module.exports ={
+    
+    SERVER_KEY:"AE8F7453A373C9A1EF6C754E76489"
+}
