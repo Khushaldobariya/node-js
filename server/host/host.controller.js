@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
     host.name = req.body.name;
     host.email = req.body.email;
     host.age = req.body.age;
-    host.type = req.body.type;
+    host.type = req.body.type.toLowerCase();
     host.mobileNo = req.body.mobileNo;
     host.image = req.file.path;
 

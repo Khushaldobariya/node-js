@@ -1,6 +1,7 @@
 const User = require("./user.model");
 const Plan = require("../Plan/plan.model");
 const Host = require("../host/host.model");
+const { json } = require("express");
 
 exports.userCreate = async (req, res) => {
   try {
@@ -14,7 +15,7 @@ exports.userCreate = async (req, res) => {
     user.email = req.body.email;
     user.plan = req.body.plan;
     user.age = req.body.age;
-    user.type = req.body.type;
+    user.type = req.body.type.toLowerCase();
 
     await user.save();
 
@@ -41,7 +42,7 @@ exports.updateUser = async (req, res) => {
     user.name = req.body.name ? req.body.name : user.name;
     user.age = req.body.age ? req.body.age : user.age;
     user.plan = req.body.plan ? req.body.plan : user.plan;
-    user.type = user.type;
+    user.type = user.type.toLowerCase();
 
     await user.save();
     return res.status(200).json({
@@ -137,6 +138,36 @@ exports.purchasePlan = async (req, res) => {
         host,
       });
     }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ status: false, error: error.message || "Server Error" });
+  }
+};
+
+exports.LoginUser = async (req, res) => {
+  try {
+    const { name, email, age } = req.body;
+    const userLogin = await User.findOne({
+      email: req.body.email,
+    });
+
+    console.log("req", req.body);
+    if (!req.body.email || !req.body.name || !req.body.age) {
+      return res
+        .status(200)
+        .json({ message: "Invalid Details", status: false });
+    }
+
+    console.log("userLogin", userLogin);
+
+    if (!userLogin) {
+      return res
+        .status(200)
+        .json({ message: "Email dose not Exits!", status: false });
+    }
+    return res.status(200).json({ message: "Login success", status: true });
   } catch (error) {
     console.log(error);
     return res

@@ -11,6 +11,8 @@ route.get("/", checkAccessKey(), userController.store);
 
 route.patch("/", checkAccessKey(), userController.updateUser);
 
+route.post("/loginUser", checkAccessKey(), userController.LoginUser);
+
 route.patch("/purchasePlan", checkAccessKey(), userController.purchasePlan);
 
 module.exports = route;
